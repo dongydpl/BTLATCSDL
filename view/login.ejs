@@ -1,21 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi"> <!-- Đổi sang 'vi' cho tiếng Việt -->
   
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - MyApp</title>
+  <title>Đăng nhập - MyApp</title> <!-- Đổi title sang tiếng Việt -->
+  
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/loginv1.css">
+  
+  <!-- === CSS TÙY CHỈNH CHỦ ĐỀ ĐỎ (NHÚNG TRỰC TIẾP) === -->
+  <style>
+    /* --- PHẦN 1: KHAI BÁO CÁC BIẾN (THEME ĐỎ - KHÔNG AN TOÀN) --- */
+    :root {
+      /* Bảng màu chính */
+      --danger-red: #dc3545;          /* Màu đỏ cảnh báo chính */
+      --danger-red-hover: #a91e2c;     /* Màu đỏ sẫm khi di chuột */
+      --danger-red-focus: rgba(220, 53, 69, 0.25); /* Vòng sáng khi focus */
+
+      /* Màu nền */
+      --body-bg: #fdf2f2;         /* Nền thân trang (đỏ rất nhạt) */
+      --card-bg: #ffffff;         /* Nền của thẻ đăng nhập */
+
+      /* Màu chữ */
+      --text-dark: #212529;
+      --text-secondary: #6c757d;
+
+      /* Các thành phần khác */
+      --border-color: #f1cccc;     /* Viền input (đỏ nhạt) */
+      --shadow-color: rgba(220, 53, 69, 0.15); /* Bóng đổ màu đỏ */
+      --border-radius: 0.5rem;      /* Bo góc (8px) */
+    }
+
+    /* --- PHẦN 2: STYLE CHO CÁC THẺ (TAGS) VÀ CLASS --- */
+
+    /* Ghi đè .bg-light của Bootstrap */
+    body.bg-light {
+      background-color: var(--body-bg) !important;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-dark);
+    }
+
+    /* Style cho thẻ .card (Khung đăng nhập chính) */
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--danger-red); /* Viền đỏ */
+      border-top: 5px solid var(--danger-red); /* Viền trên đậm để nhấn mạnh */
+      border-radius: var(--border-radius);
+      
+      /* Ghi đè .shadow-sm bằng bóng đổ màu đỏ */
+      box-shadow: 0 0.5rem 1rem var(--shadow-color) !important;
+    }
+
+    /* Tăng khoảng cách bên trong thẻ */
+    .card-body {
+      padding: 2rem;
+    }
+
+    /* Tiêu đề "Đăng nhập" (h3) */
+    .card-body h3 {
+      font-weight: 700;
+      color: var(--danger-red); /* Màu chữ đỏ */
+    }
+
+    /* Thêm icon cảnh báo trước tiêu đề */
+    .card-body h3::before {
+      content: '⚠️ '; /* Emoji cảnh báo */
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    /* Nhãn (label) cho email và password */
+    .form-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* Ô nhập liệu (input) */
+    .form-control {
+      border: 1px solid var(--border-color); /* Viền đỏ nhạt */
+      border-radius: var(--border-radius);
+      padding: 0.75rem 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Hiệu ứng khi click (focus) vào ô input */
+    .form-control:focus {
+      border-color: var(--danger-red);
+      box-shadow: 0 0 0 0.25rem var(--danger-red-focus);
+      outline: none;
+    }
+
+    /* Nút "Đăng nhập" (Ghi đè .btn-primary) */
+    .btn-primary {
+      background-color: var(--danger-red);
+      border-color: var(--danger-red);
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      padding: 0.75rem;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    /* Hiệu ứng khi di chuột (hover) vào nút */
+    .btn-primary:hover {
+      background-color: var(--danger-red-hover);
+      border-color: var(--danger-red-hover);
+      transform: translateY(-2px); /* Hiệu ứng nhấc lên */
+    }
+
+    /* Hiệu ứng khi focus (dùng phím Tab) vào nút */
+    .btn-primary:focus {
+      background-color: var(--danger-red-hover);
+      border-color: var(--danger-red-hover);
+      box-shadow: 0 0 0 0.25rem var(--danger-red-focus);
+    }
+
+    /* Đoạn text "Chưa có tài khoản?" (p) */
+    .card-body p {
+      color: var(--text-secondary);
+    }
+
+    /* Link "Đăng ký ngay" (a) */
+    .card-body a {
+      color: var(--danger-red);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .card-body a:hover {
+      color: var(--danger-red-hover);
+      text-decoration: underline;
+    }
+
+    /* Thông báo lỗi (từ EJS) */
+    .alert-danger {
+      border-radius: var(--border-radius);
+      /* Bootstrap đã tự động làm nó màu đỏ, ta chỉ cần thêm hiệu ứng */
+      animation: shake 0.5s ease-out;
+    }
+
+    /* --- PHẦN 3: HIỆU ỨNG (KEYFRAMES) --- */
+
+    /* Định nghĩa hiệu ứng "shake" */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+  </style>
+  <!-- === KẾT THÚC CSS TÙY CHỈNH === -->
+  
 </head>
 <body class="bg-light">
   <div class="container mt-5">
     <div class="card shadow-sm mx-auto" style="max-width: 400px;">
       <div class="card-body">
         <h3 class="text-center mb-4">Đăng nhập</h3>
-        <% if (typeof error !== 'undefined') { %>
+        
+        <% if (typeof error !== 'undefined' && error) { %>
           <div class="alert alert-danger"><%= error %></div>
         <% } %>
+        
         <form action="/api/v1/login" method="POST">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
@@ -25,8 +171,11 @@
             <label for="password" class="form-label">Mật khẩu</label>
             <input type="password" class="form-control" id="password" name="password" required>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Login</button>
+          
+          <!-- Sửa "Login" thành "Đăng nhập" và thêm mt-3 -->
+          <button type="submit" class="btn btn-primary w-100 mt-3">Đăng nhập</button>
         </form>
+        
         <p class="mt-3 text-center">
           Chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
         </p>
