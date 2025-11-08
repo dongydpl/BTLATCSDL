@@ -7,6 +7,7 @@ const app = express();
 // Cấu hình view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'view'));
+app.use('/PUBLIC', express.static(path.join(__dirname, 'PUBLIC')));
 
 
 // Middleware

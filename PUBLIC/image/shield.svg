@@ -1,0 +1,8 @@
+<!-- public/images/shield.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="512" height="512">
+  <defs></defs>
+  <g fill="none" fill-rule="evenodd">
+    <path d="M32 2l22 6v14c0 16-10 28-22 36C20 50 10 38 10 22V8z" fill="#7CC24B"></path>
+    <path d="M24 34l6 5 10-13" stroke="#FFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+</svg>
